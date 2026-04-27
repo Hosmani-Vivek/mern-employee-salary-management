@@ -1,53 +1,53 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { NavLink, useLocation, useNavigate } from 'react-router-dom'
-import SidebarLinkGroup from '../SidebarLinkGroup'
-import LogoSipeka from '../../../../assets/images/logo/logo-sipeka.png'
-import { AiOutlineArrowLeft } from 'react-icons/ai'
-import { RxDashboard } from 'react-icons/rx'
-import { FiDatabase, FiSettings } from 'react-icons/fi'
-import { MdKeyboardArrowDown } from 'react-icons/md'
-import { FaRegMoneyBillAlt } from 'react-icons/fa'
-import { TfiPrinter } from 'react-icons/tfi'
-import { logoutUser } from '../../../../config/redux/action'
+import React, { useState, useEffect, useRef } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import SidebarLinkGroup from "../SidebarLinkGroup";
+import LogoSipeka from "../../../../assets/images/logo/logo-sipeka.png";
+import { AiOutlineArrowLeft } from "react-icons/ai";
+import { RxDashboard } from "react-icons/rx";
+import { FiDatabase, FiSettings } from "react-icons/fi";
+import { MdKeyboardArrowDown } from "react-icons/md";
+import { FaRegMoneyBillAlt } from "react-icons/fa";
+import { TfiPrinter } from "react-icons/tfi";
+import { logoutUser } from "../../../../config/redux/action";
 import { useDispatch } from "react-redux";
-import Swal from 'sweetalert2';
-import { reset } from '../../../../config/redux/reducer/authReducer'
+import Swal from "sweetalert2";
+import { reset } from "../../../../config/redux/reducer/authReducer";
 
 const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
-  const location = useLocation()
-  const { pathname } = location
+  const location = useLocation();
+  const { pathname } = location;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const trigger = useRef(null)
-  const sidebar = useRef(null)
+  const trigger = useRef(null);
+  const sidebar = useRef(null);
 
-  const storedSidebarExpanded = localStorage.getItem('sidebar-expanded')
+  const storedSidebarExpanded = localStorage.getItem("sidebar-expanded");
   const [sidebarExpanded, setSidebarExpanded] = useState(
-    storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
-  )
+    storedSidebarExpanded === null ? false : storedSidebarExpanded === "true",
+  );
 
   const onLogout = () => {
     Swal.fire({
-      title: 'Konfirmasi',
-      text: 'Apakah Anda yakin ingin keluar?',
-      icon: 'question',
+      title: "Konfirmasi",
+      text: "Apakah Anda yakin ingin keluar?",
+      icon: "question",
       showCancelButton: true,
-      confirmButtonText: 'Ya',
-      cancelButtonText: 'Tidak',
+      confirmButtonText: "Ya",
+      cancelButtonText: "Tidak",
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(logoutUser());
-        dispatch(reset())
+        dispatch(reset());
         Swal.fire({
-          title: 'Logout Berhasil',
-          text: 'Anda telah berhasil keluar.',
-          icon: 'success',
+          title: "Logout Berhasil",
+          text: "Anda telah berhasil keluar.",
+          icon: "success",
           timer: 1500,
           timerProgressBar: true,
-          showConfirmButton: false
+          showConfirmButton: false,
         }).then(() => {
-          navigate('/login');
+          navigate("/login");
         });
       }
     });
@@ -56,80 +56,77 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }) => {
-      if (!sidebar.current || !trigger.current) return
+      if (!sidebar.current || !trigger.current) return;
       if (
         !sidebarOpen ||
         sidebar.current.contains(target) ||
         trigger.current.contains(target)
       )
-        return
-      setSidebarOpen(false)
-    }
-    document.addEventListener('click', clickHandler)
-    return () => document.removeEventListener('click', clickHandler)
-  })
+        return;
+      setSidebarOpen(false);
+    };
+    document.addEventListener("click", clickHandler);
+    return () => document.removeEventListener("click", clickHandler);
+  });
 
   // close if the esc key is pressed
   useEffect(() => {
     const keyHandler = ({ keyCode }) => {
-      if (!sidebarOpen || keyCode !== 27) return
-      setSidebarOpen(false)
-    }
-    document.addEventListener('keydown', keyHandler)
-    return () => document.removeEventListener('keydown', keyHandler)
-  })
+      if (!sidebarOpen || keyCode !== 27) return;
+      setSidebarOpen(false);
+    };
+    document.addEventListener("keydown", keyHandler);
+    return () => document.removeEventListener("keydown", keyHandler);
+  });
 
   useEffect(() => {
-    localStorage.setItem('sidebar-expanded', sidebarExpanded)
+    localStorage.setItem("sidebar-expanded", sidebarExpanded);
     if (sidebarExpanded) {
-      document.querySelector('body').classList.add('sidebar-expanded')
+      document.querySelector("body").classList.add("sidebar-expanded");
     } else {
-      document.querySelector('body').classList.remove('sidebar-expanded')
+      document.querySelector("body").classList.remove("sidebar-expanded");
     }
-  }, [sidebarExpanded])
+  }, [sidebarExpanded]);
 
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
-    >
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+        sidebarOpen ? "translate-x-0" : "-translate-x-full"
+      }`}>
       {/* <!-- SIDEBAR HEADER --> */}
-      <div className='flex items-center justify-center px-6 py-5.5 lg:py-6.5 object-cover'>
-        <NavLink to='/dashboard'>
+      <div className="flex items-center justify-center object-cover px-6 py-5.5 lg:py-6.5">
+        <NavLink to="/dashboard">
           <img
             src={LogoSipeka}
-            alt='Logo SiPeKa'
-            className='w-50'
-            title='Logo SiPeKa'
+            alt="Logo SiPeKa"
+            className="w-50"
+            title="Logo SiPeKa"
           />
         </NavLink>
 
         <button
           ref={trigger}
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          aria-controls='sidebar'
+          aria-controls="sidebar"
           aria-expanded={sidebarOpen}
-          className='block lg:hidden'
-        >
+          className="block lg:hidden">
           <AiOutlineArrowLeft className="text-xl" />
         </button>
       </div>
       {/* <!-- SIDEBAR HEADER --> */}
 
-      <div className='no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear'>
-        <nav className='mt-4 px-4 lg:mt-9 lg:px-6'>
+      <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
+        <nav className="mt-4 px-4 lg:mt-9 lg:px-6">
           <div>
-
-            <ul className='mb-6 flex flex-col gap-1.5'>
+            <ul className="mb-6 flex flex-col gap-1.5">
               {/* <!--Dashboard Admin--> */}
 
               <NavLink
-                to='/dashboard'
-                className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('dashboard') &&
-                  'bg-graydark dark:bg-meta-4'
-                  }`}
-              >
+                to="/dashboard"
+                className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                  pathname.includes("dashboard") && "bg-graydark dark:bg-meta-4"
+                }`}>
                 <RxDashboard />
                 Dashboard
               </NavLink>
@@ -138,55 +135,55 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
               {/* <!-- Master Data Admin --> */}
               <SidebarLinkGroup
                 activeCondition={
-                  pathname === '/masterdata' || pathname.includes('masterdata')
-                }
-              >
+                  pathname === "/masterdata" || pathname.includes("masterdata")
+                }>
                 {(handleClick, open) => {
                   return (
                     <React.Fragment>
                       <NavLink
-                        to='#'
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/masterdata' ||
-                          pathname.includes('masterdata')) &&
-                          'bg-graydark dark:bg-meta-4'
-                          }`}
+                        to="#"
+                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                          (pathname === "/masterdata" ||
+                            pathname.includes("masterdata")) &&
+                          "bg-graydark dark:bg-meta-4"
+                        }`}
                         onClick={(e) => {
-                          e.preventDefault()
+                          e.preventDefault();
                           sidebarExpanded
                             ? handleClick()
-                            : setSidebarExpanded(true)
-                        }}
-                      >
+                            : setSidebarExpanded(true);
+                        }}>
                         <FiDatabase />
                         Master Data
-                        <MdKeyboardArrowDown className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current text-2xl ${open && 'rotate-180'
-                          }`} />
+                        <MdKeyboardArrowDown
+                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current text-2xl ${
+                            open && "rotate-180"
+                          }`}
+                        />
                       </NavLink>
                       {/* <!-- Dropdown Menu Start --> */}
                       <div
-                        className={`translate transform overflow-hidden ${!open && 'hidden'
-                          }`}
-                      >
-                        <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6'>
+                        className={`translate transform overflow-hidden ${
+                          !open && "hidden"
+                        }`}>
+                        <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
                           <li>
                             <NavLink
-                              to='/data-pegawai'
+                              to="/data-pegawai"
                               className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }>
                               Data Pegawai
                             </NavLink>
                           </li>
                           <li>
                             <NavLink
-                              to='/data-jabatan'
+                              to="/data-jabatan"
                               className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }>
                               Data Jabatan
                             </NavLink>
                           </li>
@@ -194,7 +191,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
                     </React.Fragment>
-                  )
+                  );
                 }}
               </SidebarLinkGroup>
               {/* <!-- Master Data Admin --> */}
@@ -202,74 +199,83 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
               {/* <!-- Transaksi Admin --> */}
               <SidebarLinkGroup
                 activeCondition={
-                  pathname === '/transaksi' || pathname.includes('transaksi')
-                }
-              >
+                  pathname === "/transaksi" || pathname.includes("transaksi")
+                }>
                 {(handleClick, open) => {
                   return (
                     <React.Fragment>
                       <NavLink
-                        to='#'
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/transaksi' ||
-                          pathname.includes('transaksi')) &&
-                          'bg-graydark dark:bg-meta-4'
-                          }`}
+                        to="#"
+                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                          (pathname === "/transaksi" ||
+                            pathname.includes("transaksi")) &&
+                          "bg-graydark dark:bg-meta-4"
+                        }`}
                         onClick={(e) => {
-                          e.preventDefault()
+                          e.preventDefault();
                           sidebarExpanded
                             ? handleClick()
-                            : setSidebarExpanded(true)
-                        }}
-                      >
+                            : setSidebarExpanded(true);
+                        }}>
                         <FaRegMoneyBillAlt />
                         Transaksi
-                        <MdKeyboardArrowDown className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current text-2xl ${open && 'rotate-180'
-                          }`} />
+                        <MdKeyboardArrowDown
+                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current text-2xl ${
+                            open && "rotate-180"
+                          }`}
+                        />
                       </NavLink>
                       {/* <!-- Dropdown Menu Start --> */}
                       <div
-                        className={`translate transform overflow-hidden ${!open && 'hidden'
-                          }`}
-                      >
-                        <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6'>
+                        className={`translate transform overflow-hidden ${
+                          !open && "hidden"
+                        }`}>
+                        <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
                           <li>
                             <NavLink
-                              to='/data-kehadiran'
+                              to="/data-kehadiran"
                               className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }>
                               Data Kehadiran
                             </NavLink>
                           </li>
                           <li>
                             <NavLink
-                              to='/data-potongan'
+                              to="/data-potongan"
                               className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }>
                               Data Potongan
                             </NavLink>
                           </li>
                           <li>
                             <NavLink
-                              to='/data-gaji'
+                              to="/data-gaji"
                               className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }>
                               Data Gaji
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              to="/overtime"
+                              className={({ isActive }) =>
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }>
+                              Overtime
                             </NavLink>
                           </li>
                         </ul>
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
                     </React.Fragment>
-                  )
+                  );
                 }}
               </SidebarLinkGroup>
               {/* <!-- Transaksi Admin --> */}
@@ -277,66 +283,65 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
               {/* <!-- Laporan Admin --> */}
               <SidebarLinkGroup
                 activeCondition={
-                  pathname === '/laporan' || pathname.includes('laporan')
-                }
-              >
+                  pathname === "/laporan" || pathname.includes("laporan")
+                }>
                 {(handleClick, open) => {
                   return (
                     <React.Fragment>
                       <NavLink
-                        to='#'
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/laporan' ||
-                          pathname.includes('laporan')) &&
-                          'bg-graydark dark:bg-meta-4'
-                          }`}
+                        to="#"
+                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                          (pathname === "/laporan" ||
+                            pathname.includes("laporan")) &&
+                          "bg-graydark dark:bg-meta-4"
+                        }`}
                         onClick={(e) => {
-                          e.preventDefault()
+                          e.preventDefault();
                           sidebarExpanded
                             ? handleClick()
-                            : setSidebarExpanded(true)
-                        }}
-                      >
+                            : setSidebarExpanded(true);
+                        }}>
                         <TfiPrinter />
                         Laporan
-                        <MdKeyboardArrowDown className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current text-2xl ${open && 'rotate-180'
-                          }`} />
+                        <MdKeyboardArrowDown
+                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current text-2xl ${
+                            open && "rotate-180"
+                          }`}
+                        />
                       </NavLink>
                       {/* <!-- Dropdown Menu Start --> */}
                       <div
-                        className={`translate transform overflow-hidden ${!open && 'hidden'
-                          }`}
-                      >
-                        <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6'>
+                        className={`translate transform overflow-hidden ${
+                          !open && "hidden"
+                        }`}>
+                        <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
                           <li>
                             <NavLink
-                              to='/laporan/gaji'
+                              to="/laporan/gaji"
                               className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }>
                               Laporan Gaji
                             </NavLink>
                           </li>
                           <li>
                             <NavLink
-                              to='/laporan/absensi'
+                              to="/laporan/absensi"
                               className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }>
                               Laporan Absensi
                             </NavLink>
                           </li>
                           <li>
                             <NavLink
-                              to='/laporan/slip-gaji'
+                              to="/laporan/slip-gaji"
                               className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }>
                               Slip Gaji
                             </NavLink>
                           </li>
@@ -344,7 +349,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
                     </React.Fragment>
-                  )
+                  );
                 }}
               </SidebarLinkGroup>
               {/* <!-- Laporan Admin --> */}
@@ -352,44 +357,45 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
               {/* <!-- Pengaturan Admin --> */}
               <SidebarLinkGroup
                 activeCondition={
-                  pathname === '/pengaturan' || pathname.includes('pengaturan')
-                }
-              >
+                  pathname === "/pengaturan" || pathname.includes("pengaturan")
+                }>
                 {(handleClick, open) => {
                   return (
                     <React.Fragment>
                       <NavLink
-                        to='#'
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/pengaturan' ||
-                          pathname.includes('pengaturan')) &&
-                          'bg-graydark dark:bg-meta-4'
-                          }`}
+                        to="#"
+                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                          (pathname === "/pengaturan" ||
+                            pathname.includes("pengaturan")) &&
+                          "bg-graydark dark:bg-meta-4"
+                        }`}
                         onClick={(e) => {
-                          e.preventDefault()
+                          e.preventDefault();
                           sidebarExpanded
                             ? handleClick()
-                            : setSidebarExpanded(true)
-                        }}
-                      >
+                            : setSidebarExpanded(true);
+                        }}>
                         <FiSettings />
                         Pengaturan
-                        <MdKeyboardArrowDown className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current text-2xl ${open && 'rotate-180'
-                          }`} />
+                        <MdKeyboardArrowDown
+                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current text-2xl ${
+                            open && "rotate-180"
+                          }`}
+                        />
                       </NavLink>
                       {/* <!-- Dropdown Menu Start --> */}
                       <div
-                        className={`translate transform overflow-hidden ${!open && 'hidden'
-                          }`}
-                      >
-                        <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6'>
+                        className={`translate transform overflow-hidden ${
+                          !open && "hidden"
+                        }`}>
+                        <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
                           <li>
                             <NavLink
-                              to='/ubah-password'
+                              to="/ubah-password"
                               className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }>
                               Ubah Password
                             </NavLink>
                           </li>
@@ -397,10 +403,9 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                             <NavLink
                               onClick={onLogout}
                               className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }>
                               Log Out
                             </NavLink>
                           </li>
@@ -408,7 +413,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
                     </React.Fragment>
-                  )
+                  );
                 }}
               </SidebarLinkGroup>
               {/* <!-- Pengaturan Admin --> */}
@@ -417,7 +422,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
         </nav>
       </div>
     </aside>
-  )
-}
+  );
+};
 
 export default SidebarAdmin;

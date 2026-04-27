@@ -4,10 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Breadcrumb } from "../../../components";
 import Swal from "sweetalert2";
-import { getMe, viewGajiSinglePegawaiByMonth, viewGajiSinglePegawaiByName, viewGajiSinglePegawaiByYear } from "../../../config/redux/action";
+import {
+  getMe,
+  viewGajiSinglePegawaiByMonth,
+  viewGajiSinglePegawaiByName,
+  viewGajiSinglePegawaiByYear,
+} from "../../../config/redux/action";
 import axios from "axios";
 import { TfiPrinter } from "react-icons/tfi";
-import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
+import {
+  MdKeyboardDoubleArrowLeft,
+  MdKeyboardDoubleArrowRight,
+} from "react-icons/md";
 
 const ITEMS_PER_PAGE = 4;
 
@@ -40,14 +48,15 @@ const DataGajiPegawai = () => {
   };
 
   const onSubmitPrint = async () => {
-
     try {
       const yearData = viewGajiSinglePegawaiByYear(dataYear);
       const monthData = viewGajiSinglePegawaiByMonth(dataMonth);
       const nameData = viewGajiSinglePegawaiByName(nama_pegawai);
 
       if (yearData.length > 0 && monthData.length > 0 && nameData.length > 0) {
-        navigate(`/data-gaji-pegawai/print-page?month=${dataMonth}&year=${dataYear}&name=${nama_pegawai}`);
+        navigate(
+          `/data-gaji-pegawai/print-page?month=${dataMonth}&year=${dataYear}&name=${nama_pegawai}`,
+        );
       } else {
         console.log("Data not found!");
         Swal.fire({
@@ -72,7 +81,10 @@ const DataGajiPegawai = () => {
     const items = [];
     const maxVisiblePages = 5;
 
-    const startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    const startPage = Math.max(
+      1,
+      currentPage - Math.floor(maxVisiblePages / 2),
+    );
     const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
     for (let page = startPage; page <= endPage; page++) {
@@ -80,13 +92,13 @@ const DataGajiPegawai = () => {
         <button
           key={page}
           onClick={() => setCurrentPage(page)}
-          className={`border border-gray-2 px-4 py-2 font-semibold text-black dark:border-strokedark dark:text-white ${currentPage === page
-            ? "bg-primary text-white hover:bg-primary dark:bg-primary dark:hover:bg-primary"
-            : "hover:bg-gray-2 dark:hover:bg-stroke"
-            } rounded-lg`}
-        >
+          className={`border border-gray-2 px-4 py-2 font-semibold text-black dark:border-strokedark dark:text-white ${
+            currentPage === page
+              ? "bg-primary text-white hover:bg-primary dark:bg-primary dark:hover:bg-primary"
+              : "hover:bg-gray-2 dark:hover:bg-stroke"
+          } rounded-lg`}>
           {page}
-        </button>
+        </button>,
       );
     }
 
@@ -94,10 +106,9 @@ const DataGajiPegawai = () => {
       items.unshift(
         <p
           key="start-ellipsis"
-          className="border border-gray-2 bg-gray px-4 py-2 font-medium text-black dark:border-strokedark dark:bg-transparent dark:text-white"
-        >
+          className="border border-gray-2 bg-gray px-4 py-2 font-medium text-black dark:border-strokedark dark:bg-transparent dark:text-white">
           ...
-        </p>
+        </p>,
       );
     }
 
@@ -105,10 +116,9 @@ const DataGajiPegawai = () => {
       items.push(
         <p
           key="end-ellipsis"
-          className="border border-gray-2 bg-gray px-4 py-2 font-medium text-black dark:border-strokedark dark:bg-transparent dark:text-white"
-        >
+          className="border border-gray-2 bg-gray px-4 py-2 font-medium text-black dark:border-strokedark dark:bg-transparent dark:text-white">
           ...
-        </p>
+        </p>,
       );
     }
 
@@ -118,7 +128,10 @@ const DataGajiPegawai = () => {
   useEffect(() => {
     const getDataPegawai = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/data_gaji/name/${nama_pegawai}`);
+        const response = await axios.get(
+          `http://localhost:5000/data_gaji/name/${nama_pegawai}`,
+        );
+
         const data = response.data;
 
         setDataGajiPegawai(data);
@@ -146,7 +159,6 @@ const DataGajiPegawai = () => {
       navigate("/dashboard");
     }
   }, [isError, user, navigate]);
-
 
   return (
     <Layout>
@@ -253,16 +265,14 @@ const DataGajiPegawai = () => {
             <button
               disabled={currentPage === 1}
               onClick={goToPrevPage}
-              className="rounded-lg border border-primary px-6 py-2 font-semibold text-primary hover:bg-primary hover:text-white disabled:opacity-50 dark:border-primary dark:text-white dark:hover:bg-primary dark:hover:text-white"
-            >
+              className="rounded-lg border border-primary px-6 py-2 font-semibold text-primary hover:bg-primary hover:text-white disabled:opacity-50 dark:border-primary dark:text-white dark:hover:bg-primary dark:hover:text-white">
               <MdKeyboardDoubleArrowLeft />
             </button>
             {paginationItems()}
             <button
               disabled={currentPage === totalPages}
               onClick={goToNextPage}
-              className="rounded-lg border border-primary px-6 py-2 font-semibold text-primary hover:bg-primary hover:text-white disabled:opacity-50 dark:border-primary dark:text-white dark:hover:bg-primary dark:hover:text-white"
-            >
+              className="rounded-lg border border-primary px-6 py-2 font-semibold text-primary hover:bg-primary hover:text-white disabled:opacity-50 dark:border-primary dark:text-white dark:hover:bg-primary dark:hover:text-white">
               <MdKeyboardDoubleArrowRight />
             </button>
           </div>

@@ -1,20 +1,20 @@
-import express from 'express';
-import cors from 'cors';
-import session from 'express-session';
-import dotenv from 'dotenv';
-import db from './config/Database.js';
+import express from "express";
+import cors from "cors";
+import session from "express-session";
+import dotenv from "dotenv";
+import db from "./config/Database.js";
 
-import SequelizeStore from 'connect-session-sequelize';
-import FileUpload from 'express-fileupload';
+import SequelizeStore from "connect-session-sequelize";
+import FileUpload from "express-fileupload";
 
-import UserRoute from './routes/UserRoute.js';
-import AuthRoute from './routes/AuthRoute.js';
+import UserRoute from "./routes/UserRoute.js";
+import AuthRoute from "./routes/AuthRoute.js";
 
 const app = express();
 
 const sessionStore = SequelizeStore(session.Store);
 const store = new sessionStore({
-    db: db
+  db: db,
 });
 
 /* (async() => {
@@ -24,23 +24,27 @@ const store = new sessionStore({
 dotenv.config();
 
 // Middleware
-app.use(session({
+app.use(
+  session({
     secret: process.env.SESS_SECRET,
     resave: false,
     saveUninitialized: true,
     store: store,
     cookie: {
-        secure: 'auto'
-    }
-}));
+      secure: "auto",
+    },
+  }),
+);
 
-app.use(cors ({
+app.use(
+  cors({
     credentials: true,
-    origin: 'http://localhost:5173'
-}));
-
+    origin: "http://localhost:5173",
+  }),
+);
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(FileUpload());
 app.use(express.static("public"));
@@ -51,5 +55,6 @@ app.use(AuthRoute);
 // store.sync();
 
 app.listen(process.env.APP_PORT, () => {
-    console.log('Server up and running...');
+  console.log("App Listeneing on port", process.env.APP_PORT);
+  console.log("Server up and running...");
 });
