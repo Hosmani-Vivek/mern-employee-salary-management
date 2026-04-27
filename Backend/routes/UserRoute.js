@@ -65,11 +65,7 @@ import {
 } from "../controllers/Pegawai.js";
 
 //For OverTime 27-04-2026
-import {
-  createOvertime,
-  getOvertime,
-  deleteOvertime,
-} from "../controllers/OverTimeController.js";
+import { createOvertime } from "../controllers/OverTimeController.js";
 
 const router = express.Router();
 

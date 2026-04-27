@@ -198,12 +198,13 @@ const DataPegawai = () => {
             <FaPlus />
           </span>
         </ButtonOne>
-        <ButtonOne
-          onClick={exportToCSV}
-          className="bg-green-600 hover:bg-green-700 flex items-center gap-2 rounded px-4 py-2 text-white">
-          ⬇ Download CSV
-        </ButtonOne>
       </Link>
+      <ButtonOne
+        onClick={exportToCSV}
+        className="bg-green-600 hover:bg-green-700 flex items-center gap-2 rounded px-4 py-2 text-white">
+        ⬇ Download CSV
+      </ButtonOne>
+
       <div className="mt-6 rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="mt-4 flex flex-col items-center justify-between md:flex-row md:justify-between">
           <div className="relative mb-4 flex-1 md:mb-0 md:mr-2">
@@ -238,7 +239,7 @@ const DataPegawai = () => {
         </div>
 
         <div className="max-w-full overflow-x-auto py-4">
-          <table className="w-full table-auto">
+          <table className="w-full min-w-[700px] table-auto">
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
                 <th className="px-4 py-4 font-medium text-black dark:text-white xl:pl-11">
