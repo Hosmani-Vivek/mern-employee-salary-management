@@ -9,6 +9,13 @@ import { getMe } from "../../../../../config/redux/action";
 import Swal from "sweetalert2";
 
 const FormEditDataPegawai = () => {
+  const DESIGNATIONS = [
+    "Mason",
+    "Electrician",
+    "Plumber",
+    "Supervisor",
+    "Helper",
+  ];
   const [nik, setNik] = useState("");
   const [namaPegawai, setNamaPegawai] = useState("");
   const [username, setUsername] = useState("");
@@ -18,6 +25,7 @@ const FormEditDataPegawai = () => {
   const [status, setStatus] = useState("");
   const [hakAkses, setHakAkses] = useState("");
   const [msg, setMsg] = useState("");
+  const [designation, setDesignation] = useState("");
   const { id } = useParams();
 
   const dispatch = useDispatch();
@@ -36,6 +44,7 @@ const FormEditDataPegawai = () => {
       formData.append("tanggal_masuk", tanggalMasuk);
       formData.append("status", status);
       formData.append("hak_akses", hakAkses);
+      formData.append("designation", designation);
 
       const response = await axios.patch(
         `http://localhost:3000/data_pegawai/${id}`,
@@ -79,6 +88,7 @@ const FormEditDataPegawai = () => {
         setTanggalMasuk(data.tanggal_masuk);
         setStatus(data.status);
         setHakAkses(data.hak_akses);
+        setDesignation(data.designation);
       } catch (error) {
         if (error.response) {
           setMsg(error.response.data.msg);
@@ -218,6 +228,34 @@ const FormEditDataPegawai = () => {
                       required={true}
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
+                  </div>
+                </div>
+                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                  <div className="w-full xl:w-1/2">
+                    <label className="mb-2.5 block text-black dark:text-white">
+                      Designation <span className="text-meta-1">*</span>
+                    </label>
+                    <div className="relative z-20 bg-transparent dark:bg-form-input">
+                      <select
+                        id="designation"
+                        name="designation"
+                        value={designation}
+                        onChange={(e) => setDesignation(e.target.value)}
+                        required
+                        className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                        <option value="" disabled>
+                          Pilih designation
+                        </option>
+                        {DESIGNATIONS.map((d) => (
+                          <option key={d} value={d}>
+                            {d}
+                          </option>
+                        ))}
+                      </select>
+                      <span className="absolute right-4 top-1/2 z-30 -translate-y-1/2 text-2xl">
+                        <MdOutlineKeyboardArrowDown />
+                      </span>
+                    </div>
                   </div>
                 </div>
 
