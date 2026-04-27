@@ -2,9 +2,7 @@ import Overtime from "../models/OvertimeModel.js";
 import DataPegawai from "../models/DataPegawaiModel.js";
 import { Op } from "sequelize";
 
-// ─────────────────────────────────────────────────────────────────
-// POST /api/overtime
-// ─────────────────────────────────────────────────────────────────
+
 export const createOvertime = async (req, res) => {
   const { id_pegawai, date, hours, reason } = req.body;
 
@@ -48,14 +46,6 @@ export const createOvertime = async (req, res) => {
       .json({ message: "Reason must be at least 10 characters." });
   }
 
-  //   // 5. Employee must exist in data_pegawai
-  //   const employee = await DataPegawai.findOne({ where: { nama_pegawai } });
-  //   console.log(employee);
-  //   console.log(nama_pegawai);
-  //   if (!employee) {
-  //     return res.status(404).json({ message: "Employee not found." });
-  //   }
-
   // 6. No duplicate entry: same employee + same date
   //   const duplicate = await Overtime.findOne({ where: { nama_pegawai, date } });
   //   if (duplicate) {
@@ -92,8 +82,6 @@ export const createOvertime = async (req, res) => {
       message: `Monthly overtime cap exceeded. Current total: ${monthlyTotal} hrs. Remaining: ${60 - monthlyTotal} hrs.`,
     });
   }
-
-  // 8. Save
   try {
     await Overtime.create({
       id_pegawai,
@@ -117,34 +105,6 @@ export const createOvertime = async (req, res) => {
   }
 };
 
-// ─────────────────────────────────────────────────────────────────
-// GET /api/overtime
-// ─────────────────────────────────────────────────────────────────
-export const getOvertime = async (req, res) => {
-  try {
-    const data = await Overtime.findAll({ order: [["date", "DESC"]] });
-    return res.status(200).json(data);
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Internal server error.", error: error.message });
-  }
-};
 
-// ─────────────────────────────────────────────────────────────────
-// DELETE /api/overtime/:id
-// ─────────────────────────────────────────────────────────────────
-export const deleteOvertime = async (req, res) => {
-  try {
-    const deleted = await Overtime.destroy({ where: { id: req.params.id } });
-    if (!deleted)
-      return res.status(404).json({ message: "Overtime entry not found." });
-    return res
-      .status(200)
-      .json({ message: "Overtime entry deleted successfully." });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Internal server error.", error: error.message });
-  }
-};
+
+
