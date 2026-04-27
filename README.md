@@ -14,6 +14,7 @@ Pushed code has resolved LF-102.
 - ChatGPT: Debugging backend/frontend integration
 - ChatGPT: Sequelize query troubleshooting
 - ChatGPT: React bug fixing and optimization
+- and also CLAUDE.AI and CLAUDE CODE
 <br/>
 
   * [Configuration and Setup](#configuration-and-setup)
