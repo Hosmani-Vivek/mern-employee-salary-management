@@ -3,6 +3,9 @@
 ## Chosen HRMS
 I chose The SAME REFERENCE PROJECT because it provided a solid payroll and employee management base with clear modular architecture.</h5>
 
+Pushed code has resolved LF-102.
+
+
 ## AI Tools Used
 - ChatGPT: Debugging backend/frontend integration
 - ChatGPT: Sequelize query troubleshooting
