@@ -4,8 +4,8 @@
 I chose The SAME REFERENCE PROJECT because it provided a solid payroll and employee management base with clear modular architecture.</h5>
 
 PART1 :
-Backend/Controllers/OverTimeController.js
-Frontend
+Backend/Controllers/OverTimeController.js.
+Frontend/src/pages/Admin/Transaksi/Overtime.
 
 Pushed code has resolved LF-102.
 
