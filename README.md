@@ -1,7 +1,7 @@
 <H1 align ="center" >MERN EMPLOYEE SALARY MANAGEMENT<br/></h1>
 <h5  align ="center"> 
 ## Chosen HRMS
-I chose [project name] because it provided a solid payroll and employee management base with clear modular architecture.</h5>
+I chose The SAME REFERENCE PROJECT because it provided a solid payroll and employee management base with clear modular architecture.</h5>
 
 ## AI Tools Used
 - ChatGPT: Debugging backend/frontend integration
