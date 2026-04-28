@@ -52,7 +52,7 @@ In the second terminal
 ```
 #  --- .env  ---
 
-APP_PORT =5000
+APP_PORT =3000
 SESS_SECRET =
 
 ```
